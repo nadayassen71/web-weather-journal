@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<header>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            background-image: url(https://thumbs.dreamstime.com/b/photos-sky-different-weather-collage-204337143.jpg);
+            background-size: cover;
+        }
+        
+        h1 {
+            color: rgb(68, 6, 109);
+            font-size: xx-large;
+            font-style: oblique;
+            text-align: center;
+        }
+        
+        div {
+            background-color: rgb(231, 214, 240);
+            background-size: 250;
+        }
+        
+        h2 {
+            text-align: center;
+            font-size: xx-large;
+            font-style: italic;
+        }
+        
+        h3 {
+            text-align: center;
+            font-size: xx-large;
+            font-style: italic;
+        }
+        
+        h4 {
+            text-align: center;
+            font-size: xx-large;
+        }
+        
+        button {
+            background-color: rgb(113, 55, 151);
+        }
+        
+        input {
+            background-color: thistle;
+            border: unset;
+            box-sizing: 120;
+        }
+        
+        p {
+            background-color: rgb(167, 143, 177);
+        }
+    </style>
+</header>
+
+<body>
+    <script>
+        jQuery(function() {
+            $('#send').click(function() {
+                var zip = $("#zipBox").val();
+                var feelingg = $("#feeling").val();
+                if (zip !== '') {
+
+                    function getWeather() {
+
+                        $("#countryId").text('Id : ' + currentId);
+                        $("#currentTemp").text('Temprature : ' + currentTemp);
+                        $("#country").text('Country Name : ' + currentCountry);
+                        $("#feeling1").text('feeling : ' + feelingg);
+                        $("#currentHumidity").text('Humidity : ' + currentHumidity);
+                        $("#currentTime").text('Time : ' + currentTime);
+
+
+
+
+                        $.getJSON('http://api.openweathermap.org/data/2.5/weather?lat=' + currentLat + '&lon=' + currentLong + '&units=imperial&APPID=e656b9ee098cf2341fcfdb365b96b4a8', function(json) {
+
+
+                            var tempfahrenheit = Math.round(json.main.temp);
+                            var temcelcius = Math.round((tempfahrenheit - 32) * 5 / 9);
+                            $("#result2").text('Temprature in celcuis : ' + temcelcius + ' C');
+                            $("#result1").text('Temprature in fahrenheit : ' + tempfahrenheit + ' F');
+
+
+
+
+                        });
+                    };
+                    //$'http://ip-api.com/json/?callback=?'
+                    function getLocation() {
+                        $.getJSON('http://api.openweathermap.org/data/2.5/weather?zip=' + zip + ',us&appid=e656b9ee098cf2341fcfdb365b96b4a8', function(data)
+
+                            {
+
+
+                                currentTemp = data.main.temp;
+                                currentId = data.sys.country;
+                                currentCountry = data.name;
+                                currentLat = data.coord.lat;
+                                currentLong = data.coord.lon;
+                                currentHumidity = data.main.humidity;
+                                currentTime = data.main.sea_level;
+                                getWeather();
+
+                            });
+                    };
+
+                    getLocation();
+
+
+
+
+                }
+
+
+
+
+            });
+
+        });
+    </script>
+    <div>
+        <h1>Weather Journal</h1>
+    </div>
+
+    <h2>
+        Enter zip code :<br/>
+        <input type="text" id="zipBox" name="zipCode" placeholder=" enter a zip code " />
+    </h2>
+
+    <h3>
+        How are you feeling today ?<br/>
+        <input type="text" id="feeling" placeholder=" your feeling " />
+    </h3>
+    <h4>
+        <button type="button" id="send">Generate</button>
+    </h4>
+
+    <p id="country"> Country</p>
+    <p id="countryId">IdCounty</p>
+    <p id="currentTemp">temparture </p>
+    <p id="result2"> temprature in celcuis</p>
+    <p id="result1"> temprature in fahrenheit </p>
+    <p id="currentHumidity"> Humidity </p>
+    <p id="feeling1"> feeling today </p>
+
+
+
+
+
+
+</body>
+
+</html>
